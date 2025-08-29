@@ -1,33 +1,15 @@
-# OS / Editor
-.DS_Store
-.idea/
-.vscode/
+# Input and symbolic files
+input/*
+guide.md
+ 
+# Electron deps and build outputs
+electron/node_modules/
+electron/dist/
+electron/out/
+electron/build/
+electron/release/
+electron/.cache/
 
-# Node / JS
-node_modules/
-dist/
-build/
-.turbo/
-.next/
-.parcel-cache/
-
-# Python
-__pycache__/
-*.py[cod]
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-venv/
-.venv/
-
-# Rust
-target/
-
-# Env / Secrets
-.env
-.env.*
-
-# Coverage / Reports
-coverage/
-*.lcov
-
+# Logs and archives
+*.log
+*.asar

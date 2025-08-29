@@ -1,0 +1,195 @@
+:root {
+  --bg: #0f1115;
+  --panel: #151823;
+  --text: #e6edf3;
+  --muted: #a9b1ba;
+  --accent: #4ea1ff;
+  --accent-strong: #79c0ff;
+  --ok: #3fb950;
+  --warn: #f0883e;
+  --danger: #ff6b6b;
+  --current-bg: #1a2335;
+  --border: #2a2f3b;
+  /* Adjustable height for the preview-only drag handle */
+  /* Approx. macOS traffic-light/titlebar height */
+  --drag-handle-height:56px;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+h1, h2, h3 { color: var(--text); }
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: linear-gradient(0deg, rgba(21,24,35,0.95), rgba(21,24,35,0.95));
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(4px);
+  /* Electron: make top bar draggable */
+  -webkit-app-region: drag;
+}
+.title { font-weight: 700; letter-spacing: 0.2px; }
+.controls { display: flex; gap: 8px; align-items: center; }
+.controls .small { font-size: 12px; color: var(--muted); }
+
+/* Electron: exclude interactive elements from drag so they work normally */
+.controls, button, input, label, a, .sidebar, .content, .overlay {
+  -webkit-app-region: no-drag;
+}
+
+button {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+button.primary { background: var(--accent); color: #081018; border-color: transparent; }
+button:hover { filter: brightness(1.08); }
+
+.sidebar {
+  position: fixed;
+  top: 48px; /* approx topbar height */
+  bottom: 0;
+  left: 0;
+  width: 340px;
+  overflow: auto;
+  padding: 12px;
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+}
+.sidebar-title { font-weight: 700; margin-bottom: 8px; color: var(--muted); }
+
+#tocList { display: grid; gap: 4px; }
+.toc-item { padding: 6px 8px; border-radius: 6px; border: 1px solid transparent; cursor: pointer; }
+.toc-item:hover { background: #1b2030; }
+.toc-l2 { color: var(--muted); margin-top: 6px; }
+.toc-l3 { padding-left: 12px; }
+.toc-current { background: var(--current-bg); border-color: var(--accent); }
+.toc-done { opacity: 0.6; }
+
+.content {
+  margin-left: 340px;
+  padding: 16px 20px 60px 20px;
+}
+
+.loading { color: var(--muted); }
+
+.section { margin: 8px 0; padding: 8px 10px; border-left: 3px solid transparent; border-radius: 6px; }
+.l1 { font-size: 22px; font-weight: 800; margin-top: 14px; }
+.l2 { font-size: 18px; font-weight: 700; margin-top: 12px; }
+.l3 { font-size: 16px; font-weight: 600; margin-top: 8px; }
+.current { border-left-color: var(--accent); background: rgba(78,161,255,0.10); }
+.done { opacity: 0.55; }
+.note { color: var(--muted); font-size: 13px; margin-top: 6px; }
+.note ul { margin: 6px 0 0 1em; padding-left: 1em; }
+.note li { margin: 2px 0; }
+.raw-md { color: var(--text); background: transparent; border: 1px dashed var(--border); padding: 12px; border-radius: 8px; overflow: auto; }
+
+/* Emphasis for **bold** segments from Markdown */
+.md-strong { color: #ffd76b; font-weight: 800; }
+
+.overlay {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 10;
+  max-width: 40vw;
+  background: #0b1324;
+  border: 1px solid var(--accent);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  color: var(--accent-strong);
+}
+.overlay.hidden { display: none; }
+.overlay .label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+.overlay .now { font-size: 16px; }
+
+@media (max-width: 900px) {
+  .sidebar { width: 50vw; }
+  .content { margin-left: 50vw; }
+}
+
+/* Preview-only mode: show only the content area */
+.preview-only .topbar,
+.preview-only .sidebar,
+.preview-only .overlay { display: none !important; }
+.preview-only .content {
+  margin-left: 0 !important;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px clamp(10px, 2vw, 28px) 64px;
+}
+
+/* Underlines for H1/H2 in preview-only */
+.preview-only .section.l1 > h1 {
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+  border-bottom: 3px solid var(--accent);
+}
+.preview-only .section.l2 > h2 {
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+  border-bottom: 2px solid var(--accent);
+}
+
+/* Clickable sections + edge navigation in preview-only */
+.preview-only .section { cursor: pointer; }
+.edge-nav { display: none; }
+.preview-only .edge-nav {
+  display: block;
+  position: fixed;
+  top: 0; bottom: 0;
+  width: min(18vw, 140px);
+  z-index: 8;
+}
+.preview-only .edge-nav.left { left: 0; }
+.preview-only .edge-nav.right { right: 0; }
+.preview-only .edge-nav:hover { background: linear-gradient(90deg, rgba(78,161,255,0.06), rgba(0,0,0,0)); }
+.preview-only .edge-nav.right:hover { background: linear-gradient(270deg, rgba(78,161,255,0.06), rgba(0,0,0,0)); }
+
+/* Drag handle (Electron) visible only in preview-only */
+.drag-handle { display: none; }
+.preview-only .drag-handle {
+  display: block;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--drag-handle-height);
+  -webkit-app-region: drag; /* Electron only */
+  z-index: 9;
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0));
+}
+
+/* Minimal controls shown only in preview-only */
+.mini-controls { display: none; }
+.preview-only .mini-controls {
+  display: flex;
+  gap: 8px;
+  position: fixed;
+  right: 14px; bottom: 14px;
+  z-index: 9;
+  background: rgba(11,19,36,0.9);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 6px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  -webkit-app-region: no-drag; /* clickable in Electron */
+  opacity: 0.65;
+  transition: opacity .15s ease;
+}
+.preview-only .mini-controls:hover { opacity: 1; }
+.mini-controls button { padding: 6px 10px; }
