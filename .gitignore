@@ -1,0 +1,15 @@
+# Input and symbolic files
+input/*
+guide.md
+ 
+# Electron deps and build outputs
+electron/node_modules/
+electron/dist/
+electron/out/
+electron/build/
+electron/release/
+electron/.cache/
+
+# Logs and archives
+*.log
+*.asar
