@@ -1,0 +1,33 @@
+# OS / Editor
+.DS_Store
+.idea/
+.vscode/
+
+# Node / JS
+node_modules/
+dist/
+build/
+.turbo/
+.next/
+.parcel-cache/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+venv/
+.venv/
+
+# Rust
+target/
+
+# Env / Secrets
+.env
+.env.*
+
+# Coverage / Reports
+coverage/
+*.lcov
+
